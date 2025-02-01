@@ -1,0 +1,16 @@
+[
+  {
+    "_id": 1,
+    "_firstName": "Yacou",
+    "_lastName": "Keïta",
+    "_createAt": "2025-02-01T14:48:16.771Z",
+    "_taskList": []
+  },
+  {
+    "_id": 3,
+    "_firstName": "Richmond",
+    "_lastName": "Xavier",
+    "_createAt": "2025-02-01T14:48:16.773Z",
+    "_taskList": []
+  }
+]

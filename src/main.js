@@ -1,20 +1,29 @@
-import {User} from "./entities/user.js";
-import {Task} from "./entities/task.js";
+import { UserController } from "./controller/user.controller.js";
 
-const user = new User(1, "Junior", "Kim", new Date)
+function main() {
+  try {
+    const userController = new UserController();
+    userController.create("Kim", "Junior");
+    userController.create("Serge", "Junior");
+    userController.create("Richmond", "Xavier");
 
-const math = new Task (1, "Exercice de math", "Faire un exercice de probabilité", false, new Date, undefined, undefined, 1)
+    userController.delete(2);
+    userController.update(1, "Yacou", "Keïta");
 
-const physique = new Task (2, "Exercice de Physique", "Comprendre le système géocentrique", false, new Date, undefined, undefined, 1)
+    console.log(userController.findAll());
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 
-user.addTask(math)
-user.addTask(physique)
+main()
 
-math.addUser(user)
-physique.addUser(user)
+// const math = new Task (1, "Exercice de math", "Faire un exercice de probabilité", false, new Date, undefined, undefined, 1)
 
-// console.log(user)
+// const physique = new Task (2, "Exercice de Physique", "Comprendre le système géocentrique", false, new Date, undefined, undefined, 1)
 
-console.log(math)
+// user.addTask(math)
+// user.addTask(physique)
 
-console.log(math._user._taskList[0])
+// math.addUser(user)
+// physique.addUser(user)
