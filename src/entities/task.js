@@ -1,6 +1,6 @@
 import {User} from "./user.js";
 export class Task {
-    constructor(id, title, description, status, create_at = null, delete_at = null, update_at = null) {
+    constructor(id, title, description, status, create_at, delete_at = null, update_at = null) {
         this._id = id
         this._title = title
         this._description = description
