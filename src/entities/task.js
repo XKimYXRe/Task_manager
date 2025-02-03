@@ -21,8 +21,8 @@ export class Task {
     addUser(user) {
         const userNewInstance = new User(user._id, user._firstName, user._lastName, user._createAt)
         delete userNewInstance._taskList
-        // this._user = userNewInstance
-        this._user = user
+        this._user = userNewInstance
+        
         
     }
 }

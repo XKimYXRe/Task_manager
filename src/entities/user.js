@@ -1,3 +1,5 @@
+import { Task } from "./task.js";
+
 export class User {
     _id 
     _firstName
@@ -14,7 +16,9 @@ export class User {
     }
 
     addTask(task) {
-        this._taskList.push(task)
+        const taskNewInstance = new Task(task._id, task._title, task._description, task._status, task._create_at, task._delete_at, task._update_at)
+        delete taskNewInstance._user
+        this._taskList.push(taskNewInstance)
     }
 }
 
