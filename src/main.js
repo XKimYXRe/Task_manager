@@ -13,8 +13,10 @@ user.addTask(physique)
 math.addUser(user)
 physique.addUser(user)
 
-// console.log(user)
-
+console.log(user)
 console.log(math)
+console.log(physique)
 
-console.log(math._user._taskList[0])
+// console.log(math)
+
+// console.log(math._user._taskList[0])

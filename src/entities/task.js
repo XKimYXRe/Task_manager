@@ -7,7 +7,7 @@ export class Task {
     _create_at
     _delete_at
     _update_at
-    _user = {}
+    _user = []
     constructor(id, title, description, status, create_at, delete_at, update_at) {
         this._id = id
         this._title = title
@@ -19,10 +19,6 @@ export class Task {
     }
 
     addUser(user) {
-        const userNewInstance = new User(user._id, user._firstName, user._lastName, user._createAt)
-        delete userNewInstance._taskList
-        // this._user = userNewInstance
-        this._user = user
-        
+        this._user.push(user)
     }
 }
