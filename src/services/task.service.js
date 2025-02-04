@@ -11,8 +11,7 @@ export class TaskService {
         const user = this.userRepository.findOne(userId)
         const task = new Task(undefined, title, description, false, new Date)
         task.addUser(user)
-        this.taskRepository.save(task)
-        
+      return  this.taskRepository.save(task)  
     }
 
     findAll(){
@@ -24,10 +23,10 @@ export class TaskService {
     }
 
     delete(id) {
-        this.taskRepository.delete(id)
+       return this.taskRepository.delete(id)
     }
 
-    update(id, title, description, status) {
-        this.taskRepository.update(id, title, description, status);
+    update(id, title, description) {
+       return this.taskRepository.update(id, title, description);
     }
 }

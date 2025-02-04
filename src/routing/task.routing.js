@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { UserController } from "../controller/user.controller.js";
+import { TaskController } from "../controller/task.controller.js";
 
 const router = Router()
-const userController = new UserController()
+const taskController = new TaskController()
 
 router
 
     .post("/create", (request, response) => {
         try {
-            const { firstName, lastName } = request.body
-            const user = userController.create(firstName, lastName)
-            response.json(user)
+            const { title, description,userId } = request.body
+            const task = taskController.create(title, description,userId)
+            response.json(task)
         } catch (error) {
             response.json(error.message)
         }
@@ -18,8 +18,8 @@ router
 
     .get("/all", (request, response) => {
         try {
-            const users = userController.findAll()
-            response.json(users)
+            const tasks = taskController.findAll()
+            response.json(tasks)
         } catch (error) {
             response.json(error.message)
         }
@@ -27,8 +27,8 @@ router
 
     .get("/:id", (request, response) => {
         try {
-            const user = userController.findOne(request.params.id)
-            response.json(user)
+            const task = taskController.findOne(request.params.id)
+            response.json(task)
         } catch (error) {
             response.json(error.message)
         }
@@ -36,8 +36,8 @@ router
 
     .delete("/:id/delete", (request, response) => {
         try {
-            const user = userController.delete(request.params.id)
-            response.json(user)
+            const task = taskController.delete(request.params.id)
+            response.json(task)
         } catch (error) {
             response.json(error.message)
         }
@@ -45,9 +45,9 @@ router
 
     .put("/:id/update", (request, response) => {
         try {
-            const { firstName, lastName } = request.body
-            const user = userController.update(request.params.id,firstName,lastName)
-            response.json(user)
+            const { title, description } = request.body
+            const task = taskController.update(request.params.id,title,description)
+            response.json(task)
         } catch (error) {
             response.json(error.message)
         }

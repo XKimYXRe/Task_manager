@@ -4,12 +4,9 @@ export class TaskController {
     taskService = new TaskService();
 
     create(title, description, userId) {
-        if (!userId)
-        throw new error(
-            "Veuillez associé un utilisateur à la création de cette tâche."
-        );
+        if (!userId) throw new Error("Veuillez associé un utilisateur à la création de cette tâche.");
         if (!title) throw new Error("Veillez saisie un titre.");
-        this.taskService.create(title, description, userId);
+        return this.taskService.create(title, description, userId);
     }
 
     findAll() {
@@ -23,11 +20,11 @@ export class TaskController {
 
     delete(id) {
         if (!id) throw new Error("Identifiant incorrecte");
-        this.taskService.delete(id);
+        return this.taskService.delete(id);
     }
 
-    update(id, title, status) {
+    update(id, title, description) {
         if (!id) throw new Error("Identifiant incorrecte");
-        this.taskService.update(id, title, status);
+        return this.taskService.update(id, title, description);
     }
 }
