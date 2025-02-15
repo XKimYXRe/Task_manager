@@ -1,54 +1,33 @@
-import { MongoClient } from "mongodb";
+
+import mongoRepository from './mongodb.repository.js'
+
 
 export class UserRepository {
-    userList = [];
-    db;
-    userCollection;
-
+    storageInstance
     constructor() {
-        this.connectDB();
-    }
-
-    async connectDB() {
-        try {
-        const client = new MongoClient("mongodb://localhost:27017");
-        await client.connect();
-        this.db = client.db("taskManager");
-        this.userCollection = this.db.collection("users");
+        mongoRepository.connect()
+        mongoRepository.createDatabase("taskManagerDataBase")
+        mongoRepository.createCollection("User")
         
-    } catch (err) {
-        console.error("Erreur de connexion à MongoDB:", err);
-        }
     }
 
-    async save(user) {
-        const result = await this.userCollection.insertOne(user);
-        user._id = result.insertedId;
-        
-        return this.findOne(user._id);
+    save(user) {
+        return mongoRepository.insertOne(user)
     }
 
-    async findAll() {
-        return await this.userCollection.find({}).toArray();
+    findAll(){
+        return mongoRepository.find();
     }
 
-    async findOne(id) {
-        return await this.userCollection.findOne({ _id: id });
+    findOne(id) {
+        return mongoRepository.findOne(id)
     }
 
-    async delete(id) {
-        const userToDelete = await this.findOne(id);
-        await this.userCollection.deleteOne({ _id: id });
-        
-        return userToDelete;
+    delete(id) {
+        return mongoRepository.delete(id)
     }
 
-    async update(id, firstName, lastName) {
-        const updateData = {};
-        if (firstName) updateData._firstName = firstName;
-        if (lastName) updateData._lastName = lastName;
-
-        await this.userCollection.updateOne({ _id: id }, { $set: updateData });
-        return this.findOne(id);
+    update(id, firstName, lastName) {
+        return mongoRepository.update(id, { _firstname: firstName, _lastName: lastName});
     }
-    }
+}
