@@ -1,47 +1,54 @@
-import {StorageRepository} from './storage.repository.js'
-
+import { MongoClient } from "mongodb";
 
 export class UserRepository {
-    userList = []
-    storageInstance
+    userList = [];
+    db;
+    userCollection;
+
     constructor() {
-        this.storageInstance = new StorageRepository();
-        this.storageInstance.createDatabase("taskManagerDataBase")
-        this.storageInstance.createCollection("User")
-         this.userList = this.storageInstance.read()
+        this.connectDB();
     }
 
-    save(user) {
-        user._id = this.userList.length + 1
-        this.userList.push(user)
-        this.storageInstance.write(this.userList)
-        return this.findOne(user._id)
+    async connectDB() {
+        try {
+        const client = new MongoClient("mongodb://localhost:27017");
+        await client.connect();
+        this.db = client.db("taskManager");
+        this.userCollection = this.db.collection("users");
+        
+    } catch (err) {
+        console.error("Erreur de connexion à MongoDB:", err);
+        }
     }
 
-    findAll(){
-        return this.storageInstance.read();
+    async save(user) {
+        const result = await this.userCollection.insertOne(user);
+        user._id = result.insertedId;
+        
+        return this.findOne(user._id);
     }
 
-    findOne(id) {
-        return this.userList.find(user => user._id == id)
+    async findAll() {
+        return await this.userCollection.find({}).toArray();
     }
 
-    delete(id) {
-        const newUserList = this.userList.filter(user => user._id != id)
-        const userDeleted = this.findOne(id)
-        this.userList = newUserList
-        this.storageInstance.write(this.userList)
-        return userDeleted
+    async findOne(id) {
+        return await this.userCollection.findOne({ _id: id });
     }
 
-    update(id, firstName, lastName) {
-        this.userList.forEach(user => {
-            if(user._id == id) {
-                user._firstName = firstName ? firstName : user._firstName
-                user._lastName = lastName ? lastName : user._lastName
-            }
-            this.storageInstance.write(this.userList);
-        })
-        return this.findOne(id)
+    async delete(id) {
+        const userToDelete = await this.findOne(id);
+        await this.userCollection.deleteOne({ _id: id });
+        
+        return userToDelete;
     }
-}
+
+    async update(id, firstName, lastName) {
+        const updateData = {};
+        if (firstName) updateData._firstName = firstName;
+        if (lastName) updateData._lastName = lastName;
+
+        await this.userCollection.updateOne({ _id: id }, { $set: updateData });
+        return this.findOne(id);
+    }
+    }

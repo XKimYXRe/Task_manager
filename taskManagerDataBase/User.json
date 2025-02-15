@@ -1,23 +1,16 @@
 [
   {
+    "_id": 1,
+    "_firstName": "Kim",
+    "_lastName": "Junior",
+    "_createAt": "2025-02-15T06:39:52.194Z",
+    "_taskList": []
+  },
+  {
     "_id": 2,
-    "_firstName": "yacou ",
-    "_lastName": "keita",
-    "_createAt": "2025-02-04T01:43:22.946Z",
-    "_taskList": []
-  },
-  {
-    "_id": 3,
-    "_firstName": "junior",
-    "_lastName": "test",
-    "_createAt": "2025-02-04T01:43:28.013Z",
-    "_taskList": []
-  },
-  {
-    "_id": 3,
-    "_firstName": "junior",
-    "_lastName": "test",
-    "_createAt": "2025-02-04T01:50:14.643Z",
+    "_firstName": "Kim",
+    "_lastName": "Junior",
+    "_createAt": "2025-02-15T06:42:11.612Z",
     "_taskList": []
   }
 ]

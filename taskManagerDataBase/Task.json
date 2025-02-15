@@ -1,29 +1,15 @@
 [
   {
     "_id": 1,
-    "_title": "philo",
-    "_description": "premiere annee",
+    "_title": "Math",
+    "_description": "Do math Exercise",
     "_status": false,
-    "_create_at": "2025-02-04T02:44:43.787Z",
+    "_create_at": "2025-02-15T06:44:27.829Z",
     "_user": {
-      "_id": 2,
-      "_firstName": "yacou ",
-      "_lastName": "keita",
-      "_createAt": "2025-02-04T01:43:22.946Z"
-    },
-    "_update_at": "2025-02-04T02:55:02.857Z"
-  },
-  {
-    "_id": 3,
-    "_title": "physique",
-    "_description": "cours de physique le soir",
-    "_status": false,
-    "_create_at": "2025-02-04T02:44:50.153Z",
-    "_user": {
-      "_id": 2,
-      "_firstName": "yacou ",
-      "_lastName": "keita",
-      "_createAt": "2025-02-04T01:43:22.946Z"
+      "_id": 1,
+      "_firstName": "Kim",
+      "_lastName": "Junior",
+      "_createAt": "2025-02-15T06:39:52.194Z"
     }
   }
 ]
