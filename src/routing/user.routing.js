@@ -6,47 +6,47 @@ const userController = new UserController()
 
 router
 
-    .post("/create", (request, response) => {
+    .post("/create", async (request, response) => {
         try {
             const { firstName, lastName } = request.body
-            const user = userController.create(firstName, lastName)
+            const user = await userController.create(firstName, lastName)
             response.json(user)
         } catch (error) {
             response.json(error.message)
         }
     })
 
-    .get("/all", (request, response) => {
+    .get("/all", async (request, response) => {
         try {
-            const users = userController.findAll()
+            const users = await userController.findAll()
             response.json(users)
         } catch (error) {
             response.json(error.message)
         }
     })
 
-    .get("/:id", (request, response) => {
+    .get("/:id", async (request, response) => {
         try {
-            const user = userController.findOne(request.params.id)
+            const user = await userController.findOne(request.params.id)
             response.json(user)
         } catch (error) {
             response.json(error.message)
         }
     })
 
-    .delete("/:id/delete", (request, response) => {
+    .delete("/:id/delete", async (request, response) => {
         try {
-            const user = userController.delete(request.params.id)
+            const user = await userController.delete(request.params.id)
             response.json(user)
         } catch (error) {
             response.json(error.message)
         }
     })
 
-    .put("/:id/update", (request, response) => {
+    .put("/:id/update", async (request, response) => {
         try {
             const { firstName, lastName } = request.body
-            const user = userController.update(request.params.id,firstName,lastName)
+            const user = await userController.update(request.params.id,firstName,lastName)
             response.json(user)
         } catch (error) {
             response.json(error.message)

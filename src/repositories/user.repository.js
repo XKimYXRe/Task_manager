@@ -3,31 +3,43 @@ import mongoRepository from './mongodb.repository.js'
 
 
 export class UserRepository {
-    storageInstance
+
     constructor() {
-        mongoRepository.connect()
-        mongoRepository.createDatabase("taskManagerDataBase")
-        mongoRepository.createCollection("User")
-        
+        this.init()
     }
 
-    save(user) {
-        return mongoRepository.insertOne(user)
+    init() {
+        Promise.all([
+            mongoRepository.createDatabase("taskManagerDataBase"),
+            mongoRepository.createCollection("User")
+        ])
     }
 
-    findAll(){
-        return mongoRepository.find();
+    async save(user) {
+        return await mongoRepository.insertOne(user)
     }
 
-    findOne(id) {
-        return mongoRepository.findOne(id)
+    async findAll() {
+        return await mongoRepository.find();
     }
 
-    delete(id) {
-        return mongoRepository.delete(id)
+    async findOne(id) {
+        return await mongoRepository.findOne(id)
     }
 
-    update(id, firstName, lastName) {
-        return mongoRepository.update(id, { _firstname: firstName, _lastName: lastName});
+    async delete(id) {
+        return await mongoRepository.delete(id)
+    }
+
+    async update(id, firstName, lastName) {
+        const updateInfo = {
+            ...(firstName && { _firstName: firstName }),
+            ...(lastName && { _lastName: lastName })
+        }
+        const isValide = Object.keys(updateInfo).length === 0
+        if (isValide) {
+            throw new Error("Aucune information valide à mettre à jour");
+        }
+        return await mongoRepository.update(id, updateInfo);
     }
 }

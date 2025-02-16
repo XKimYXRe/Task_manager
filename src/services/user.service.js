@@ -9,19 +9,19 @@ export class UserService {
         return this.userRepository.save(user)
     }
 
-    findAll() {
-        return this.userRepository.findAll()
+    async findAll() {
+        return await this.userRepository.findAll()
     }
 
-    findOne(id) {
-        return this.userRepository.findOne(id)
+    async findOne(id) {
+        return await this.userRepository.findOne(id)
     }
 
-    delete(id) {
-      return  this.userRepository.delete(id)
+    async delete(id) {
+      return  await this.userRepository.delete(id)
     }
 
-    update(id, firstName, lastName) {
-       return this.userRepository.update(id, firstName, lastName)
+    async update(id, firstName, lastName) {
+       return await this.userRepository.update(id, firstName, lastName)
     }
 }

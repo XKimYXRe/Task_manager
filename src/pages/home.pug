@@ -1,0 +1,17 @@
+doctype html
+html
+   head
+      title = title ;
+   body
+      include ./header.pug
+      if(description)
+       p #{description} !
+      else 
+       P Bienvenu sur la page d'accueille 
+
+      div 
+         |Pour insérer plusieurs lignes de texte,
+         |Vous pouvez utiliser l'opérateur pipe
+      a(href = url) site offile de pug
+
+      include ./footer.pug

@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { MongoClient,ObjectId } from "mongodb";
 
 class MongoRepository {
 
@@ -6,88 +6,97 @@ class MongoRepository {
 		this.mongoClient = new MongoClient("mongodb://localhost:27017");
 		this.dataBase = null
 		this.collection = null
-
+		this.activeConnections = 0
 	}
 
 	async connect () {
-		await this.mongoClient.connect()
+		try {
+			await this.mongoClient.db().command({ping:1})
+		} catch (error) {
+            await this.mongoClient.connect();
+			throw new Error("Connexion à MongoDB...")
+		}
+		this.activeConnections++
 	} 
 
-	close () {
-		this.mongoClient.close()
+	async close () {
+		this.activeConnections--
+		if(this.activeConnections <= 0){
+		console.log("Fermeture de la connexion MongoDB...");
+		await this.mongoClient.close()
+		}
 	}
 
 	
-	createDatabase (name) {
-		this.database = this.mongoClient.db(name) 
+	async createDatabase (name) {
+		await this.connect()
+		if(name) this.database = this.mongoClient.db(name) 
 	}
 
-	createCollection(name) {
-		this.collection = this.database.collection(name);
+	async createCollection(name) {
+		await this.connect()
+		if(name && this.database) this.collection = this.database.collection(name);
 	}
 
-	insertOne(entity) {
+	async insertOne(entity) {
+		this.connect()
 		try {
-			this.connect()
-			return this.collection.insertOne(entity)
-		} catch (error) {
-			throw error
+			const response = await this.collection.insertOne(entity)
+			return await this.collection.findOne({ _id: response.insertedId });
 		} finally {
-			this.close()
+			await this.close()
+		}
+	}
+
+	async find() {
+		await this.connect()
+		try {
+			return await this.collection.find().toArray()
+		} finally {
+			await this.close()
 		}
 		
 	}
 
-	find() {
+	async findOne(id) {
+		await this.connect()
 		try {
-			this.connect()
-			return this.collection.find()
-		} catch (error) {
-			throw error
+			return await this.collection.findOne({ _id: new ObjectId(String(id)) })
 		} finally {
-			this.close()
+			await this.close()
 		}
 		
 	}
 
-	findOne(id) {
+	async delete(id) {
+		await this.connect()
 		try {
-			this.connect()
-			return this.collection.findOne(id)
-		} catch (error) {
-			throw error
+			const user = await this.findOne(id)
+			if(!user)return null
+			await this.collection.deleteOne({ _id: new ObjectId(String(user._id)) })
+			return user
 		} finally {
-			this.close()
+			await this.close()
 		}
-		
-	}
-
-	delete(id) {
-		try {
-			this.connect()
-			return this.collection.delete(id)
-		} catch (error) {
-			throw error
-		} finally {
-			this.close()
-		}
-		
 	}
 	
-	update(id, entity) {
+	async update(id, entity) {
+		await this.connect()
 		try {
-			this.connect()
-			return this.collection.updateOne(id, entity)
-		} catch (error) {
-			throw error
+			 await this.collection.updateOne( { _id: new ObjectId(String(id)) }, { $set: entity })
+			 return await this.findOne(id)
 		} finally {
-			this.close()
+			await this.close()
 		}
 		
 	}
-
-
 	
 }
 
-export default new MongoRepository()
+process.on("SIGINT", async () => {
+    await mongoRepository.close();
+    process.exit(0);
+});
+
+const mongoRepository = new MongoRepository();
+export default mongoRepository;

@@ -3,28 +3,28 @@ import { UserService } from "../services/user.service.js";
 export class UserController {
     userService = new UserService()
 
-    create(firstName, lastName) {
+    async create(firstName, lastName) {
         if (!firstName) throw new Error("Veillez saisie le nom.")
         if (!lastName) throw new Error("Veillez saisie le prénom.");
-        return this.userService.create(firstName, lastName)
+        return await this.userService.create(firstName, lastName)
     }
 
-    findAll() {
-        return this.userService.findAll()
+    async findAll() {
+        return await this.userService.findAll()
     }
 
-    findOne(id) {
+    async findOne(id) {
         if (!id) throw new Error("Identifiant incorrecte");
-        return this.userService.findOne(id)
+        return await this.userService.findOne(id)
     }
 
-    delete(id) {
+    async delete(id) {
         if (!id) throw new Error("Identifiant incorrecte");
-        return this.userService.delete(id)
+        return await this.userService.delete(id)
     }
 
-    update(id, firstName, lastName) {
+    async update(id, firstName, lastName) {
         if (!id) throw new Error("Identifiant incorrecte");
-       return this.userService.update(id, firstName, lastName)
+       return await this.userService.update(id, firstName, lastName)
     }
 }
